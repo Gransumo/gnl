@@ -72,15 +72,43 @@ char	*ft_set_saved(char *save)
 	return(n_save);
 }
 
+char	*ft_strjoin(char *save, char *buff)
+{
+	static char	*ptr;
+	size_t		i;
+	size_t		j;
+
+	if(save == NULL && buff == NULL)
+		return (NULL);
+	i = 0;
+	j = -1;
+	ptr = malloc(ft_strlen(save) + ft_strlen(buff) + 1);
+	if(ptr == NULL)
+		return(NULL);
+	while(i < ft_strlen(save))
+	{
+		ptr[i] = save[i];
+		i++;
+	}
+	while(++j < ft_strlen(buff))
+	{
+		ptr[i + j] = buff[j];
+	}
+	ptr[i + j] = '\0';
+	//free(buff);
+	//free(save);
+	return(ptr);
+}
+
 int main()
 {
-	char	*s = "hola\n";
+	char	*s = "hola";
+	char	*s2 = "\n";
 	size_t len;
 	
-	//printf("%s\n", ft_set_new(s));
 	len = len_new(s);
-	//printf("%s", ft_set_new(s));
-	printf("%s", ft_set_saved(s));
+
+	printf("%s", ft_strjoin(s, s2));
 	printf("%zu", len);
 	return(0);
 }

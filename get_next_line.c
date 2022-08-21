@@ -5,7 +5,7 @@ char	*get_next_line(int fd)
 {
 	static char	*save;
 	char	*new;
-	char	*aux;
+
 	if(fd < 0)
 		return (NULL);
 	if(save != NULL && ft_strchr(save, '\n') != NULL)
@@ -14,9 +14,10 @@ char	*get_next_line(int fd)
 		save = ft_set_saved(save);
 		return (new);
 	}
-	aux = get_line(save, fd);
+	save = get_line(save, fd);
+	new = ft_set_new(save);
+	save = ft_set_saved(save);
 	printf(".|%s|.", save);
-	new = ft_strjoin(save, aux);
 	if(new == NULL)
 		return (NULL);
 	return (new);
@@ -36,14 +37,15 @@ char	*get_line(char	*save, int fd)
 		n_bytes = read(fd, buff, BUFFER_SIZE);
 		if(n_bytes < 0)
 			return(NULL);
+		printf("%s", buff);
 		save = ft_strjoin(save, buff);
 		if(n_bytes == 0)
 			break ;
 	}
+	printf("al final del bucle save es (%s)", save);
 	if(n_bytes == 0 && ft_strlen(save) == 0 && ft_strlen(buff) == 0)
 		return (NULL);
-	buff = ft_set_new(save);
-	save = ft_set_saved(save);
+
 	return(save);
 }
 
@@ -93,7 +95,7 @@ int main()
 	int fd;
 
 	fd = open("text", O_RDONLY);
-	printf("primera: %sfin", get_next_line(fd));
-	printf("segunda:\n%s", get_next_line(fd));
+	printf("%s.", get_next_line(fd));
+	printf("%s", get_next_line(fd));
 	return (0);
 }
