@@ -1,10 +1,13 @@
 
 #include "get_next_line.h"
-
+#ifndef BUFFER_SIZE
+#define BUFFER_SIZE 42
+#endif
 char	*get_next_line(int fd)
 {
 	static char	*save;
 	char	*new;
+	char	*line;
 
 	if(fd < 0)
 		return (NULL);
@@ -17,38 +20,44 @@ char	*get_next_line(int fd)
 	save = get_line(save, fd);
 	new = ft_set_new(save);
 	save = ft_set_saved(save);
-	printf(".|%s|.", save);
-	if(new == NULL)
+	if(new == NULL || save == NULL)
 		return (NULL);
-	return (new);
+	line = new;
+	free(new);
+	return (line);
 }
 
 char	*get_line(char	*save, int fd)
 {
 	char	*buff;
-	ssize_t	n_bytes;
+	size_t	n_bytes;
 
 	n_bytes = 1;
-	while(ft_strchr(save, '\n') == NULL)
+	while(!ft_strchr(save, '\n'))
 	{
 		buff = malloc(BUFFER_SIZE + 1);
 		if(buff == NULL)
 			return (NULL);
 		n_bytes = read(fd, buff, BUFFER_SIZE);
 		if(n_bytes < 0)
+		{
+			free(buff);
 			return(NULL);
-		printf("%s", buff);
+		}
+		buff[n_bytes] = 0;
 		save = ft_strjoin(save, buff);
 		if(n_bytes == 0)
 			break ;
 	}
-	printf("al final del bucle save es (%s)", save);
 	if(n_bytes == 0 && ft_strlen(save) == 0 && ft_strlen(buff) == 0)
 		return (NULL);
-
 	return(save);
 }
 
+void leaks()
+{
+	system("leaks a.out");
+}
 char	*ft_set_new(char *save)
 {
 	char	*new;
@@ -94,8 +103,10 @@ int main()
 {
 	int fd;
 
+	//atexit(leaks);
 	fd = open("text", O_RDONLY);
-	printf("%s.", get_next_line(fd));
+	printf("%s", get_next_line(fd));
+	printf("%s", get_next_line(fd));
 	printf("%s", get_next_line(fd));
 	return (0);
 }

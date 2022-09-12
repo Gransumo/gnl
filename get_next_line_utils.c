@@ -28,7 +28,7 @@
 
 char	*ft_strjoin(char *save, char *buff)
 {
-	static char	*ptr;
+	char	*ptr;
 	size_t		i;
 	size_t		j;
 
