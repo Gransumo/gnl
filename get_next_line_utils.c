@@ -11,21 +11,6 @@
 /* ************************************************************************** */
 #include "get_next_line.h"
 
-/* 
-1)	save = NULL|	RETURN NULL		OK
-	buff = NULL|					OK
-
-2)	save != NULL|	RETURN SAVE
-	buff == NULL|
-
-3)	save == NULL|	RERUTN SAVE = BUFF
-	buff != NULL|
-
-4)	save != NULL|	RETURN JOIN
-	buff != NULL|
- */
-
-
 char	*ft_strjoin(char *save, char *buff)
 {
 	char	*ptr;
@@ -53,7 +38,6 @@ char	*ft_strjoin(char *save, char *buff)
 	free(save);
 	return(ptr);
 }
-
 
 char	*ft_strchr(const char *s, int c)
 {
