@@ -89,6 +89,8 @@ size_t	len_new(char *save)
 	size_t	len;
 
 	len = 0;
+	if(!save)
+		return (0);
 	while(save[len] != '\0')
 	{
 		if(save[len] == '\n')

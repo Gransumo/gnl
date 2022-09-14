@@ -11,7 +11,7 @@ char	*get_next_line(int fd)
 
 	if(fd < 0)
 		return (NULL);
-	if(save != NULL && ft_strchr(save, '\n') != NULL)
+	if(save != NULL && (ft_strchr(save, '\n') != NULL || ft_strchr(save, '\0') != NULL))
 	{
 		new = ft_set_new(save);
 		save = ft_set_saved(save);
@@ -20,7 +20,7 @@ char	*get_next_line(int fd)
 	save = get_line(save, fd);
 	new = ft_set_new(save);
 	save = ft_set_saved(save);
-	if(new == NULL || save == NULL)
+	if(new == NULL)
 		return (NULL);
 	line = new;
 	free(new);
@@ -31,6 +31,7 @@ char	*get_line(char	*save, int fd)
 {
 	char	*buff;
 	size_t	n_bytes;
+
 
 	n_bytes = 1;
 	while(!ft_strchr(save, '\n'))
@@ -49,7 +50,7 @@ char	*get_line(char	*save, int fd)
 		if(n_bytes == 0)
 			break ;
 	}
-	if(n_bytes == 0 && ft_strlen(save) == 0 && ft_strlen(buff) == 0)
+	if(n_bytes == 0 && !ft_strlen(save) && !ft_strlen(buff))
 		return (NULL);
 	return(save);
 }
@@ -66,6 +67,8 @@ char	*ft_set_new(char *save)
 
 	i = 0;
 	len = len_new(save);
+	if(save == NULL)
+		return (NULL);
 	new = malloc (len + 1);
 	if(new == NULL)
 		return(NULL);
@@ -86,8 +89,10 @@ char	*ft_set_saved(char *save)
 
 	i = 0;
 	len = len_new(save);
+	if(!save)
+		return (NULL);
 	n_save = malloc(ft_strlen(&save[len]) + 1);
-	if(n_save == NULL)
+	if(!n_save)
 		return (NULL);
 	while(save[len + i] != '\0')
 	{
@@ -103,8 +108,9 @@ int main()
 {
 	int fd;
 
-	//atexit(leaks);
+	atexit(leaks);
 	fd = open("text", O_RDONLY);
+	printf("%s", get_next_line(fd));
 	printf("%s", get_next_line(fd));
 	printf("%s", get_next_line(fd));
 	printf("%s", get_next_line(fd));
