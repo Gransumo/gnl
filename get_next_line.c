@@ -24,13 +24,16 @@ char	*get_next_line(int fd)
 	return (new);
 }
 
+/* int	ft_read(int fd, char *buff)
+{
 
+} */
 
 char	*get_line(char	*save, int fd)
 {
 	char	*buff;
 	int		n_bytes;
-	size_t	count;
+	int		count;
 
 	count = 0;
 	n_bytes = 0;
@@ -121,8 +124,17 @@ char	*ft_set_saved(char *save)
 	fd = open("text", O_RDONLY);
 	char	*line;
 	line = get_next_line(fd);
-	printf("\n\n\n\n1: %s\n", line);
+	printf("1: %s\n", line);
+	free(line);
+	line = get_next_line(fd);
+	printf("\n2: %s\n", line);
+	free(line);
+	line = get_next_line(fd);
+	printf("\n2: %s\n", line);
+	free(line);
+	line = get_next_line(fd);
+	printf("\n2: %s\n", line);
 	free(line);
 
 	return (0);
-}  */
+} */ 
